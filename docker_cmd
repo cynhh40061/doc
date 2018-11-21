@@ -1,0 +1,41 @@
+dockerFile_cmd:
+    FROM 使用哪個映像檔作為基底
+    MAINTAINER 維護者信息
+    RUN 在建立中執行
+    ADD 複製本地檔案到映像檔
+    EXPOSE 向外部開放埠號
+    CMD 描述容器啟動後執行的程序
+
+docker_cmd:
+    docker build 建立映像檔
+    docker tag 修改映像檔的標籤
+    docker rmi 移除本地端的映像檔(刪除映像檔之前要先用 docker rm 刪掉依賴於這個映像檔的所有容器)
+    docker rm 移除容器(可加-f參數)
+    docker run 新建並啟動容器
+    docker ps 、top 查看容器訊息
+    docker stop 終止一個執行中的容器
+    docker logs 取得容器的輸出訊息
+    docker restart 終止，然後再重新啟動容器
+    docker attach 進入一個已經運行的容器，進行命令操作，但是從容器中退出之後容器也會停止
+    docker exec 進入容器並開啟一個新的命令，退出後容器會繼續執行
+    docker export 匯出本地某個容器
+    docker import 從容器快照檔案中再匯入為映像檔(可指定目錄或URL)(丟棄所有的歷史記錄和原始資料訊息，容量小)
+    docker load 來匯入映像檔儲存檔案到本地映像檔庫(保留所有信息，容量大)
+
+    docker login 輸入使用者名稱、密碼和電子信箱來完成註冊和登錄 Docker Hub 官方的公共倉庫(註冊成功後，使用者的認證訊息將保存在本地.dockercfg)
+    docker search 查詢官方倉庫中的映像檔(不需登入)
+    docker pull 下載官方映像檔到本地
+    docker push 將映像檔推送到 Docker Hub
+    docker-registry 官方提供的工具，用於建立私有的映像檔倉庫(https://philipzheng.gitbooks.io/docker_practice/content/repository/local_repo.html)
+
+docker_pram:
+    # 註釋
+    -t 標記添加 tag，指定新的映像檔的使用者信息
+    “.” Dockerfile 所在的路徑（當前目錄），也可以換成具體的 Dockerfile 的路徑
+    -d 讓 Docker 容器在後臺以守護態（Daemonized）形式執行
+    -f Docker 會發送 SIGKILL 信號給容器
+    -v 建立一個資料卷並掛載到容器裡(自行安排path位置)
+    :ro 掛載資料卷的預設權限是讀寫，使用者可以指定為唯讀(加在路徑後方：-v /src/webapp:/opt/webapp:ro)
+    --volumes-from 從多個容器掛載多個資料卷(也可以從其他已經掛載了容器卷的容器來掛載資料卷)
+    tar 備份(用法：$ sudo docker run --volumes-from dbdata -v $(pwd):/backup ubuntu tar cvf /backup/backup.tar /dbdata)
+    untar 解壓備份檔案到掛載的容器卷中(用法：$ sudo docker run --volumes-from dbdata2 -v $(pwd):/backup busybox tar xvf/backup/backup.tar)

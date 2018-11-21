@@ -1,0 +1,40 @@
+sh檔設定：
+
+    #!/bin/bash
+    HOST_IP="$1"
+    if [ -z "${HOST_IP}" ]; then
+     echo "Usage: d-run-cluster [host IP]"
+    else
+     echo "Coordinator IP = " ${HOST_IP} &&
+        #注意！！！一定要有一個port是8528才能連
+        #db存放位置設定： -v /media/niko/新增磁碟區1/db/data1:/data
+        docker run -d --name=adb1 --rm -p 8528:8528 -v /media/niko/新增磁碟區1/db/data1:/data -v /var/run/docker.sock:/var/run/docker.sock arangodb/arangodb-starter --starter.address=${HOST_IP} &&
+        docker run -d --name=adb2 --rm -p 8538:8528 -v /media/niko/新增磁碟區1/db/data2:/data -v /var/run/docker.sock:/var/run/docker.sock arangodb/arangodb-starter:latest --starter.address=${HOST_IP} --starter.join=${HOST_IP} &&
+        docker run -d --name=adb3 --rm -p 8548:8528 -v /media/niko/新增磁碟區1/db/data3:/data -v /var/run/docker.sock:/var/run/docker.sock arangodb/arangodb-starter:latest --starter.address=${HOST_IP} --starter.join=${HOST_IP}
+    fi
+
+sh啟動：
+
+    cd到sh檔案位置
+    sh+" "+檔案名稱+" "+ip
+    12個啟動完算是成功，使用web interface前請記得清cookie
+    web interface 一樣使用port：8529、8539、8549
+
+docker相關操作：
+
+    查詢：
+        $ docker ps -a 
+        (a, --all)
+    停用：
+       $ docker stop $(docker ps -a -q) 
+        ($內為另一個指令)
+        (-q, --quiet 只取ID)
+    查看某DBlog：
+       $ docker logs DB_ID
+
+
+
+///////////////////
+附帶：
+    linux=$ ip address
+    window=ipconfig
