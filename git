@@ -1,0 +1,160 @@
+
+第一次配置用，新電腦要加信箱即使用者名稱：
+    $ git config --global user.name "Niko"
+    $ git config --global user.email "niko@clctech.co"
+
+複製下來：
+    $ git clone ssh://git@git.clctech.co:7999/gp/dev-env.git
+
+上傳：
+    $ cd existing-project                                                 //進入專案
+    $ git init                                                            //在此專案中建立 Git Repository，會多了一個 .git 的版控資料夾
+    $ git add --all                                                       //加入暫存區(追蹤)
+    $ git commit -m "Initial Commit"                                      //提交版本至儲存庫(本地)："這個 commit 的說明"
+    $ git remote add origin ssh://git@git.clctech.co:7999/gp/dev-env.git  //將本地與遠端(remote)儲存庫建立連結：git remote add [名稱(這個連結的名稱，預設origin)][GitHub帳號]/[存放位置]
+    $ git push -u origin master                                           //將本地儲存庫上傳到 origin 的 master 分支(master 為預設名稱，通常當成主分支用)
+
+上傳：
+    $ cd existing-project                                                 //進入專案
+    $ git remote set-url origin git@github.com:cynhh40061/niko2.git       //修改本地與遠端(remote)連結，這邊是把 origin 這個遠連結改成連：github的cynhh40061並存到niko2.git儲存庫下
+    $ git push -u origin --all                                            //將本地儲存庫全部上傳至 origin
+    $ git push origin --tags                                              //將本地儲存庫上傳為某一版(tags為版號，用法後面說明)
+
+////////////////////////////////////////官網文件////////////////////////////////////////
+2.1 基礎 - 取得一個 Git 倉儲
+    為現有資料夾建立初始化倉儲：
+        $ git init      //建立一個名為 .git 的子資料夾，其中包含 Git 所有必需的倉儲檔案，也就是 Git 倉儲的骨架。
+
+    追蹤並提交檔案：
+        $ git add *.c                               //追蹤所有.c檔案(用法 git add (files))
+        $ git add LICENSE                           //追蹤追蹤授權檔案（注意，可能會造成本地端和遠端不一致)
+        $ git commit -m 'initial project version'   //提交版本至儲存庫(本地)
+
+    註：$ git add 是一個多重用途的指令，可用來：開始追蹤、預存、標記合併衝突（merge-conflicted）檔案為已解決...etc。
+
+    把遠端clone下來：
+        $ git clone https://github.com/libgit2/libgit2  //也可以直接載or ssh~~ git~~
+
+
+2.2 Git 基礎 - 紀錄變更到版本庫中
+    檢查檔案狀態(commit之後就看不到)：
+        $ git status
+            On branch master                                    //目前在哪一個分支上
+            Your branch is up-to-date with 'origin/master'.     //(和伺服器上的同名分支是同步的)
+            nothing to commit, working directory clean          //乾淨的工作目錄，已追蹤的檔案沒有被修改
+
+        如果增加 README 檔後尚未追蹤它：
+            On branch master
+            Your branch is up-to-date with 'origin/master'.                                 //哪些檔案尚未被追蹤
+            Untracked files:
+              (use "git add <file>..." to include in what will be committed)
+
+                README
+
+            nothing added to commit but untracked files present (use "git add" to track)    //為了避免不想要的檔案納入版本控制，需要手動將檔案加入
+
+        如果追蹤了 README 之後又加入 CONTRIBUTING.md：
+            On branch master
+            Your branch is up-to-date with 'origin/master'.
+            Changes to be committed:
+              (use "git reset HEAD <file>..." to unstage)
+
+                new file:   README
+
+            Changes not staged for commit:
+              (use "git add <file>..." to update what will be committed)
+              (use "git checkout -- <file>..." to discard changes in working directory)
+
+                modified:   CONTRIBUTING.md
+        $ git diff：
+        
+
+
+
+    檢查檔案狀態(簡易輸出)：
+        $ git status -s 或 
+        $ git status --short
+             M README               //2有個欄位時，左邊欄位用來指示「預存區」狀態，右邊欄位則是「工作目錄」狀態，這邊的 README 狀態為：已修改，但尚未被預存
+            MM Rakefile             //狀態：曾經修改過也預存過，但之後又再次修改，所以總共有二次修改，一個有預存一個沒有
+            A  lib/git.rb           //被加入預存區的新檔案
+            M  lib/simplegit.rb     //已修改檔案
+            ?? LICENSE.txt          //未追蹤
+
+    忽略不需要的檔案：
+        $ cat .gitignore
+            *.[oa]      //忽略任何副檔名為「.o」或「.a」的檔案，通常是編譯系統建置程式碼時所產生的目的檔及連結檔
+            *~          //忽略所有檔名以波浪號（~）結尾的檔案，通常被用在文字編輯器中，例如：Emacs 的暫存檔
+    編寫 .gitignore 檔案的模式規則如下：
+
+        空白列，或者以 # 開頭的列會被忽略
+        可使用標準的 Glob 模式
+        以斜線（/）開頭以避免路徑遞迴。（譯注：只忽略特定路徑；如果不以斜線開頭，則不管同名檔案或同名資料夾在哪一層都會被忽略。）
+        以斜線（/）結尾代表是目錄
+        以驚嘆號（!）開頭表示將模式規則反向
+
+        Glob 模式就像是 Shell 所使用的簡化版正規運算式（regular expressions）：
+            一個星號（*）匹配零個或多個字元[abc] 匹配中括弧內的其中一個字元（此例為 a、b、c）
+            二個星號用來匹配巢狀目錄；a/**/z 將會匹配到 a/z、a/b/z、a/b/c/z
+            問號（?）匹配單一個字元
+            中括孤內的字以連字號連接（如：[0-9]）用來匹配任何在該範圍內的字元（此例為 0 到 9）
+            ...等等
+                # 不要追蹤檔名為 .a 結尾的檔案
+                *.a
+                # 但是要追蹤 lib.a，即使上面已指定忽略所有的 .a 檔案
+                !lib.a
+                # 只忽略根目錄下的 TODO 檔案，不包含子目錄下的 TODO
+                /TODO
+                # 忽略 build/ 目錄下所有檔案
+                build/
+                # 忽略 doc/notes.txt，但不包含 doc/server/arch.txt
+                doc/*.txt
+                # 忽略所有在 doc/ 目錄底下的 .pdf 檔案
+                doc/**/*.pdf
+
+    檢視已預存及未預存的檔案：
+                
+
+
+2.3 Git 基礎 - 檢視提交的歷史記錄
+    
+    git log 用 q 退出
+
+
+2.4 Git 基礎 - 復原
+
+
+2.5 與遠端協同工作
+
+
+2.6 標籤
+
+
+2.7 Git Aliases
+    自訂'別名'，在 git config 新增指令
+        $ git config --global alias.co checkout             //輸入 $ git co => $ git checkout
+        $ git config --global alias.br branch               //輸入 $ git br => $ git branch
+        $ git config --global alias.ci commit               //輸入 $ git ci => $ git commit
+        $ git config --global alias.st status               //輸入 $ git st => $ git status
+
+    創建自己的指令
+        $ git config --global alias.last 'log -1 HEAD'      //輸入 $ git last => $ git log -1 HEAD
+
+    創建執行外部指令快捷
+        $ git config --global alias.visual '!gitk'          //輸入 $ git visual => $ gitk
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,103 @@
+package.json的自訂名稱
+    "start": "node src/App.js"  可以 $ sudo npm start 直接跑
+    "start:dev": "nodemon"      請用 $ sudo npm run start_dev 記得 + run
+
+get&post
+    get：  
+        http://192.168.10.212:3100/v1/example?queryName="123" 傳出去變下面這樣
+        GET xxx /v1/example?queryName=%22123%22
+        可以從 request 取值：
+                            req.query.queryName 或 request.query['queryName']
+    post:
+        
+beforHeandler：
+
+
+
+config相關參數請設定.evn
+
+RouteMApping.js：
+    url相關設定
+    用api/v1/底下的schema.js做格式控管，注意名稱需要對應js與routeMapping，並與檔案名稱一致
+    
+    
+儲存時如果失敗多存一次即可，port會被佔用是因為除存尚未完成
+
+ArangoManager必須加this：this.ArangoManager.query(updateBalanceAql);
+
+工具：
+    bignumber.js = 數字加減
+    loadsh = 資料處理
+    heartbeats = 資料處理
+    moment = 時間處理
+
+test傳入值：
+    放在inject的body或payload(待查)中，和postman傳body一樣
+    inject post 傳 body或payload(待查) 都是用 request.body接收
+
+nodejs:tap
+        測試工具，測試輸出與回傳值預期是否相同，主要還是用equal等斷言工具，難點在於如何想出該判斷哪些東西，才能完整測出程式的問題
+        單元測試!!!
+        api:t.xxx();有許多為相同用法!!!
+        
+        t.deepEqual(JSON,JSON); => 傳入要比較的2值，值一致回傳eql，失敗報錯，(==)等級，一般判斷
+        t.strictEqual(); => 傳入要比較的2值，值與型態完全一致回傳eql，失敗報錯，(===)等級，嚴格判斷
+        t.ok(布林變數, '回傳訊息'); => 傳入布林變數與回傳str，成功會回傳str，失敗報錯
+        t.type(變數, '變數型態'); => 傳入變數與預期變數型態，型態相同回傳型態，失敗報錯
+
+git：圖形界面使用smartgit
+
+//////待測//////
+redis
+transactions rollback
+payload & body : payload is a body? || body is a payload?
+
+////////////////////////////////////////GET schema用法////////////////////////////////////////
+exports.getUserTransactions = {
+//////////////////////////////////////////無必傳值用//////////////////////////////////////////
+    querstring: {
+        limit: { type: 'number' },
+        page: { type: 'number' },...
+    },
+////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////有必傳值用//////////////////////////////////////////
+    params: {
+        type: 'object',
+        properties: {
+            ecUserId: { type: 'string' },...
+        },
+        requier: ['ecUserId']//必傳項目
+    },
+////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////回傳皆為必傳，判斷格式即可///////////////////////////////////
+    respons: {
+        '200': {
+            type: 'object',
+            properties: {
+                total: { type: 'number' },
+                totalPages: { type: 'number' },
+                _links: {
+                    type: 'object',
+                    properties: {
+                        prev: { type: 'string', format: 'url' },
+                        next: { type: 'string', format: 'url' }
+                    }
+                },
+                items: {//注意items裡面的items格式用法
+                    type: 'array',
+                    items: {
+                        type: 'object',
+                        properties: {
+                            type: { type: 'number' },
+                            orderId: { type: 'string' },
+                            amount: { type: 'number' },
+                            timestamp: { type: 'number' },
+                        }
+                    }
+                }
+            }
+        }
+    }
+};
+
+
