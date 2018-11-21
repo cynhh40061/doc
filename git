@@ -123,6 +123,7 @@
 2.4 Git 基礎 - 復原
 
 
+<<<<<<< HEAD
 2.5 與遠端協同工作
 
 
@@ -130,6 +131,15 @@
 
 
 2.7 Git Aliases
+=======
+2.5 Git 基礎 - 與遠端協同工作
+
+
+2.6 Git 基礎 - 標籤
+
+
+2.7 Git 基礎 - Git Aliases
+>>>>>>> doc2
     自訂'別名'，在 git config 新增指令
         $ git config --global alias.co checkout             //輸入 $ git co => $ git checkout
         $ git config --global alias.br branch               //輸入 $ git br => $ git branch
@@ -143,12 +153,31 @@
         $ git config --global alias.visual '!gitk'          //輸入 $ git visual => $ gitk
 
 
+<<<<<<< HEAD
 
 
 
 
 
 
+=======
+3.1 使用 Git 分支 - 簡述分支
+
+
+3.2 使用 Git 分支 - 分支和合併的基本用法
+
+
+3.3 使用 Git 分支 - 分支管理
+
+
+3.4 使用 Git 分支 - 分支工作流程
+
+
+3.5 使用 Git 分支 - 遠端分支
+
+
+3.6 使用 Git 分支 - 衍合
+>>>>>>> doc2
 
 
 
