@@ -1,0 +1,91 @@
+常用步驟：
+
+    第一次使用加user_name和user_email(*註2)：
+        $ git config --global user.name "Niko"
+        $ git config --global user.email "niko@clctech.co"
+
+
+    抓遠端的檔案下來：
+        clone方式：
+            $ git clone ssh://git@git.clctech.co:7999/gp/dev-env.git
+        已經連過只是要更新：
+            先比對是否要合併 => $ git fetch
+            合併 => $ git merge
+                
+            #直接更新 => $ git pull (等同上方fetch+merge)
+
+
+    上傳：
+        進入專案底下  => $ cd existing-project
+        建立 Git 庫    => $ git init
+        加入暫存追蹤      => $ git add --all
+        commit 本地端      => $ git commit -m "Initial Commit"
+        建立遠端連結          => $ git remote add origin ssh://git@git.clctech.co:7999/gp/dev-env.git
+        上傳至遠端               => $ git push -u origin master
+
+
+    上傳已經建立過的Git：
+        進入專案底下  => $ cd existing-project
+        設定遠端連結  => $ git remote set-url origin ssh://git@git.clctech.co:7999/gp/dev-env.git
+        上傳至遠端    => $ git push -u origin --all
+        上傳至遠端(加入標籤(說明用)) => $ git push origin --tags
+
+    刪除分支：
+        刪除本地分支 => $ git branch -d <branch_name>
+        刪除遠端分支 => $ git push --delete <remote_name> <branch_name>
+
+
+
+
+註記：
+    1.“origin” 并无特殊含义
+        远程仓库名字 “origin” 与分支名字 “master” 一样，在 Git 中并没有任何特别的含义一样。 
+        同时 “master” 是当你运行 git init 时默认的起始分支名字，原因仅仅是它的广泛使用，“origin” 是当你运行 git clone 时默认的远程仓库名字。 
+        如果你运行 git clone -o booyah，那么你默认的远程分支名字将会是 booyah/master。
+    
+    2.如何避免每次输入密码
+        如果你正在使用 HTTPS URL 来推送，Git 服务器会询问用户名与密码。 
+        默认情况下它会在终端中提示服务器是否允许你进行推送。
+
+        如果不想在每一次推送时都输入用户名与密码，你可以设置一个 “credential cache”。 
+        最简单的方式就是将其保存在内存中几分钟，可以简单地运行 git config --global credential.helper cache 来设置它。
+
+    3.上游快捷方式
+        当设置好跟踪分支后，可以通过 @{upstream} 或 @{u} 快捷方式来引用它。 
+        所以在 master 分支时并且它正在跟踪 origin/master 时，如果愿意的话可以使用 git merge @{u} 来取代 git merge origin/master。
+
+    4.
+
+
+    5.
+
+
+    6.
+
+
+    7.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
