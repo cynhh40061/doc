@@ -10,9 +10,10 @@
             $ git clone ssh://git@git.clctech.co:7999/gp/dev-env.git
         已經連過只是要更新：
             先比對是否要合併 => $ git fetch
-            合併 => $ git merge
+            切換分支        => $ git checkout <branch_name>
+            合併(*註4)       => $ git merge <branch_name>
                 
-            #直接更新 => $ git pull (等同上方fetch+merge)
+            #直接更新 => $ git pull (等同上方fetch+merge(把另一個分支合併到目前切換這個))
 
 
     上傳：
@@ -54,8 +55,8 @@
         当设置好跟踪分支后，可以通过 @{upstream} 或 @{u} 快捷方式来引用它。 
         所以在 master 分支时并且它正在跟踪 origin/master 时，如果愿意的话可以使用 git merge @{u} 来取代 git merge origin/master。
 
-    4.
-
+    4.另一種合併rebase
+        $ git rebase master
 
     5.
 
